@@ -1,7 +1,23 @@
 package testsDemoWebShop;
 
-public class TestsDemoWebShop {
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+
+import frameworkClasses.ReadExcel;
+import pageObjectDemoWebShop.BasePageDemoWebShop;
+import pageObjectDemoWebShop.ResultsPage;
+
+public class TestsDemoWebShop {
+	
+	//Instantiate Pages
+	ReadExcel rExcel = new ReadExcel();
+	BasePageDemoWebShop basePG = new BasePageDemoWebShop();
+	ResultsPage resultsPG = new ResultsPage();
+	
+	
 	//User Story 1: search using the top menu bar
 		//  GIVEN
 		//		Given the shopper is on the Landing page
@@ -12,8 +28,21 @@ public class TestsDemoWebShop {
 		//	THEN
 		//		The selected category page will be displayed
 		//
-	public void GIVEN_ShopperOnLandingPage_WHEN_TopMenuBar_THEN_SelectedCategoryPageDisplayed() {
-		
+	@DataProvider(name = "Selection Category")
+	public Object[][] getDataFromExcel(){
+		String excelDirectory = rExcel.getDataConfigPropeties("excelDataDir");
+		Object[][] errObj = rExcel.getExcelData(excelDirectory +"TestCaseInput.xlsx", "Sheet1");
+		return errObj;
+	}
+	
+	@Test(dataProvider="Selection Category")
+	public void GIVEN_ShopperOnLandingPage_WHEN_TopMenuBar_THEN_SelectedCategoryPageDisplayed(String category, String quantity) throws InterruptedException {
+		//Variables
+		String actualDescription;
+		basePG.NavigateToHomePage();
+		basePG.selectTopMenuCategory(category);
+		actualDescription = resultsPG.getElementTextPageHeader();
+		Assert.assertEquals(actualDescription.contains(category),true);
 	}
 	
 	//User Story 2: browse using the categories list

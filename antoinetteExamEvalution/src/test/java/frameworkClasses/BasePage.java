@@ -36,12 +36,6 @@ public class BasePage {
 			String browser = getDataConfigPropeties("browser");
 			String URL = getDataConfigPropeties("systemUnderTest");
 			String pdriverDir = getDataConfigPropeties("driverdir");
-//			String browser = "chrome";
-//			String URL = "https://www.takealot.com/";
-//			String pdriverDir = "C:\\Users\\aventer\\selenium-java-4.1.2\\";
-
-//			 String pdriverDirFireFox = getDataConfirgPropeties("driverdirFirefox");
-//			 String pdriverDirEdge = getDataConfirgPropeties("driverdirEdge");
 
 			// check if parameter passed as "chrome"
 
@@ -54,26 +48,11 @@ public class BasePage {
 				driver.get(URL);
 				driver.manage().window().maximize();
 				driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-			} else if (browser.equalsIgnoreCase("edge")) {
-				System.setProperty("webdriver.edge.driver", pdriverDir + "MicrosoftWebdriver.exe");
-				// create an instance of edge
-				driver = new EdgeDriver();
-				driver.get(URL);
-				driver.manage().window().maximize();
-				driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-			} else {
-				System.setProperty("webdriver.gecko.driver", pdriverDir + "geckodriver.exe");
-				// create an instance of edge
-				driver = new FirefoxDriver();
-				driver.get(URL);
-				driver.manage().window().maximize();
-				driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-			}
+			} 
 		}
 	}
 
-	// METHOD: To read Config
+	// METHOD: To read Configuration
 	public String getDataConfigPropeties(String propertyName) {
 		// Properties set
 		// System.out.println("in config.properties");
@@ -92,10 +71,6 @@ public class BasePage {
 		return p.getProperty(propertyName);
 
 	}
-
-	// Check of our Driver have been started , if not then start
-
-	// Set the Browser and URL
 
 	// Method: Wait for Element, Wait for Click,
 	// ...Wait for Element
@@ -184,9 +159,7 @@ public class BasePage {
 		sDropdown.selectByVisibleText(pValue);
 	}
 
-	// Method: Get text on Method - pass
-
-	// Method Switch Window
+	// Method: Switch Window
 	public void SwitchToNewTab() {
 		Set<String> handles = driver.getWindowHandles();
 		Iterator<String> it = handles.iterator();
@@ -195,6 +168,7 @@ public class BasePage {
 		driver.switchTo().window(childWindowID);
 	}
 
+	// Method: Switch Parent Window
 	public void SwitchToParent() {
 		Set<String> handles = driver.getWindowHandles();
 		Iterator<String> it = handles.iterator();
@@ -203,6 +177,7 @@ public class BasePage {
 		driver.switchTo().window(parentWindowID);
 	}
 
+	// Method: Close Child Window
 	public void closeChildBrowser() {
 		Set<String> handles = driver.getWindowHandles();
 		Iterator<String> it = handles.iterator();
@@ -213,6 +188,7 @@ public class BasePage {
 		driver.switchTo().window(parentWindowID);
 	}
 	
+	// Method: Quit the Browser
 	public void quitBrowser() {
 		Set<String> handles = driver.getWindowHandles();
 		Iterator<String> it = handles.iterator();
@@ -221,6 +197,4 @@ public class BasePage {
 		driver.quit();
 	}
 	
-
-
 }
