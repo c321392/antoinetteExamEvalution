@@ -29,8 +29,20 @@ public class BasePageDemoWebShop extends BasePage {
 		
 		String catTxt = selectedCategory.toUpperCase();
 		clickElement(By.linkText(catTxt));
-		System.out.println(list_AllCategories);
+	}
 
+	//Method : Select Side Menu Bar Category
+	public void selectSideMenuCategory (String selectedCategory) {
+		List<WebElement> list_AllCategories = driver.findElements(By.xpath("//body/div[@class='master-wrapper-page']/div[@class='master-wrapper-content']//div[@class='block block-category-navigation']/div[@class='listbox']"));
+		
+		String catTxt = selectedCategory.toUpperCase();
+		clickElement(By.linkText(selectedCategory));
 	}
 	
+	// Method: Enter text on field
+	public void enterText(By pLocator, String enterText) {
+		waitforClick(30, pLocator);
+		driver.findElement(pLocator).sendKeys(enterText);
+	}
+
 }
