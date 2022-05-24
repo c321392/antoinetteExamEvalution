@@ -5,13 +5,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-
+import frameworkClasses.BasePage;
 import frameworkClasses.ReadExcel;
 import pageObjectDemoWebShop.BasePageDemoWebShop;
 import pageObjectDemoWebShop.CartPageDemoWebShop;
 import pageObjectDemoWebShop.ResultsPage;
 
-public class TestsDemoWebShop {
+public class TestsDemoWebShop extends BasePage {
 	
 	//Instantiate Pages
 	ReadExcel rExcel = new ReadExcel();
@@ -45,6 +45,9 @@ public class TestsDemoWebShop {
 		basePG.selectTopMenuCategory(category);
 		actualDescription = resultsPG.getElementTextPageHeader();
 		Assert.assertEquals(actualDescription.contains(category),true);
+		resultsPG.clickAddToCart();
+		resultsPG.clickOnCart();
+		//Test for Successfully add to Cart
 		basePG.NavigateToHomePage();
 	}
 	
@@ -65,6 +68,9 @@ public class TestsDemoWebShop {
 		basePG.selectSideMenuCategory(category);
 		actualDescription2 = resultsPG.getElementTextPageHeader();
 		Assert.assertEquals(actualDescription2.contains(category),true);
+		resultsPG.clickAddToCart();
+		resultsPG.clickOnCart();
+		//Test for Successfully add to Cart                                                                                                                                                                                                                       
 		basePG.NavigateToHomePage();
 }
 	
