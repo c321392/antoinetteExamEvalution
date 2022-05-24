@@ -45,8 +45,8 @@ public class TestsDemoWebShop extends BasePage {
 		basePG.selectTopMenuCategory(category);
 		actualDescription = resultsPG.getElementTextPageHeader();
 		Assert.assertEquals(actualDescription.contains(category),true);
-		resultsPG.clickAddToCart();
-		resultsPG.clickOnCart();
+		//resultsPG.clickAddToCart();
+		//resultsPG.clickOnCart();
 		//Test for Successfully add to Cart
 		basePG.NavigateToHomePage();
 	}
@@ -68,8 +68,8 @@ public class TestsDemoWebShop extends BasePage {
 		basePG.selectSideMenuCategory(category);
 		actualDescription2 = resultsPG.getElementTextPageHeader();
 		Assert.assertEquals(actualDescription2.contains(category),true);
-		resultsPG.clickAddToCart();
-		resultsPG.clickOnCart();
+		//resultsPG.clickAddToCart();
+		//resultsPG.clickOnCart();
 		//Test for Successfully add to Cart                                                                                                                                                                                                                       
 		basePG.NavigateToHomePage();
 }

@@ -5,7 +5,7 @@
     <classes>
       <class name="testsDemoWebShop.TestsDemoWebShop">
         <methods>
-          <include name="GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_UpdateQty"/>
+          <include name="GIVEN_ShopperOnLandingPage_WHEN_TopMenuBar_THEN_SelectedCategoryPageDisplayed" invocation-numbers="1 2"/>
         </methods>
       </class> <!-- testsDemoWebShop.TestsDemoWebShop -->
     </classes>

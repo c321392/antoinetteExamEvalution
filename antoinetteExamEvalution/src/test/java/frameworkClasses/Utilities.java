@@ -27,7 +27,7 @@ public class Utilities extends BasePage {
 		File ScrFile = scrShot.getScreenshotAs(OutputType.FILE);
 		
 		//move the image file to the new destination
-		File DestFile = new File("target" + "surefire-reports-"+ getAppConfigPropeties("build.timestamp") + "//images" + fileWithPath );
+		File DestFile = new File("target//" + "surefire-reports-"+ getAppConfigPropeties("build.timestamp") + "//images" + fileWithPath );
 		//copy file
 		FileUtils.copyFile(ScrFile, DestFile);
 		
