@@ -6,28 +6,33 @@ import frameworkClasses.BasePage;
 
 public class ResultsPage extends BasePage {
 	
-	//Get the Header Element Text
+	//Method: Get the Header Element Text
 	public String getElementTextPageHeader() {
 		String hText = getElementText(By.cssSelector("h1"));
 		return hText;
 	}
 
-	//Click on Add to Cart
-	public void clickAddToCart() {
-		clickElement(By.cssSelector("[data-productid='13'] [class='button-2 product-box-add-to-cart-button']"));
-		
+	//Method: Click on Add to Cart
+	public void clickAddToCart(String recordToRetrieve) {
+		clickElement(By.cssSelector("div:nth-of-type(" + recordToRetrieve +") > .product-item input[value='Add to cart']"));
+
 	}
 	
-	//Get the Header Element Text
+	//Method: Get the Header Element Text
 	public String getCartTextPageHeader() {
-		String hText = getElementText(By.xpath("//li[@id='topcartlink']/a[@href='/cart']"));
+		String hText = getElementText(By.cssSelector(".cart-qty"));
 		return hText;
 	}
 	
-	//Click on cart
+	//Method: Click on cart
 	public void clickOnCart() {
 		clickElement(By.cssSelector("#topcartlink .ico-cart"));
-		//clickElement(By.cssSelector("[class='button-1 cart-button']"));
 		
+	}
+	
+	//Method: Click on Item to Open Item
+	public void clickOnItem(String recordToRetrieve) {
+
+		clickElement(By.cssSelector("div:nth-of-type("+recordToRetrieve+") > .product-item  h2 > a"));
 	}
 }
