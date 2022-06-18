@@ -3,6 +3,7 @@ package testsDemoWebShop;
 
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -47,7 +48,7 @@ public class TestsDemoWebShop extends BasePage {
 		//Variables
 		String actualDescription;
 		String cartQTYDescription;
-		int n;
+		
 		//Neatly start the test by ensuring we in the home page
 		//Step One: Select the Category from Top Bar depending on Input
 		Reporter.log("User Story 1: search using the top menu bar");
@@ -82,25 +83,38 @@ public class TestsDemoWebShop extends BasePage {
 		//	THEN
 		//		The selected category page will be displayed
 		//
+	
 	@Test(dataProvider="Selection Category")
 	public void GIVEN_ShopperOnLandingPage_WHEN_CategoriesList_THEN_SelectedCategoryPageDisplayed(String category, String recordToRetrieve) {
 		//Variables
 		String actualDescription2;
+		String cartQTYDescription2;
 		
 		//Neatly start the test by ensuring we in the home page
 		//Step One: Select the Category from Side Category List depending on Input
-		Reporter.log("User Story 2: browse using the categories list");
+		Reporter.log("User Story 2: Browse using the categories list");
 		basePG.NavigateToHomePage();
 		basePG.selectSideMenuCategory(category);
 		actualDescription2 = resultsPG.getElementTextPageHeader();
+		Reporter.log("Description : " + actualDescription2 + " - Contains Category - " + category);
 		Assert.assertEquals(actualDescription2.contains(category),true);
 		
 		//Step Two: Add  Item to the Cart
 		resultsPG.clickAddToCart(recordToRetrieve);
 		
-	                                                                                                                                                                                                               
+		//Step Three: Verify that Item was added to the cart
+		resultsPG.clickOnCart();
+		
+		cartQTYDescription2 = cartPG.selectCartQty();
+		Reporter.log("Cart QTY = " + cartQTYDescription2);
+		Assert.assertEquals(cartQTYDescription2.contentEquals("1"),true);
+		
+		//Step Four: Clean-up
+		cartPG.selectFirstItemTickBox();
+		cartPG.updateShoppingCart();
 		basePG.NavigateToHomePage();
-}
+		
+	}
 	
 	//User Story 3: go to cart and update quantity
 		//  GIVEN
@@ -116,34 +130,41 @@ public class TestsDemoWebShop extends BasePage {
 		String actualDescription3;
 		String selectCategory = "Books";
 		String cartQTY;
+		String cartupdQTY;
 		String actUpdQty = "3";
 		
 		//Step One Select the Category
-		Reporter.log("User Story 3: go to cart and update quantity");
+		Reporter.log("User Story 3: Go to cart and update quantity");
 		basePG.NavigateToHomePage();
 		basePG.selectSideMenuCategory(selectCategory);
 		actualDescription3 = resultsPG.getElementTextPageHeader();
-		//Assert.assertEquals(actualDescription3.contains(selectCategory),true);
+		Reporter.log("Description : " + actualDescription3 + " - Contains Category - " + selectCategory);
+		Assert.assertEquals(actualDescription3.contains(selectCategory),true);
 
 		//Step Two add first item to Cart
 		resultsPG.clickAddToCart("1");
-		Thread.sleep(3000);
 		
 		//Step Three go to Cart
 		resultsPG.clickOnCart();
-		cartQTY = resultsPG.getCartTextPageHeader();
-		System.out.println("The print QTY is : " + cartQTY);
-		//Assert.assertEquals(cartQTY.contentEquals("(1)"), true);		
+		cartQTY = cartPG.selectCartQty();
+		Reporter.log("The Before Cart QTY is : " + cartQTY );
+		Assert.assertEquals(cartQTY.contentEquals("1"), true);		
 
 		//Step Four Amend Qty
 		cartPG.updateItemOneQTY(actUpdQty);
+		Reporter.log("QTY to update to : " + actUpdQty );
 		
 		//Step Five Update the Shopping Cart
 		cartPG.updateShoppingCart();
 		Thread.sleep(3000);
-		cartQTY = resultsPG.getCartTextPageHeader();
-		//Assert.assertEquals(cartQTY.contentEquals("("+actUpdQty+")"), true);
+		cartupdQTY = cartPG.selectCartQty();
+		Reporter.log("The Updated Cart QTY is : " + cartupdQTY );
+		Assert.assertEquals(cartupdQTY.contentEquals(actUpdQty), true);		
 		
+		//Step six : Cleanup
+		cartPG.selectFirstItemTickBox();
+		cartPG.updateShoppingCart();
+		basePG.NavigateToHomePage();
 	}
 	
 	//User Story 4: remove item from cart
@@ -154,38 +175,42 @@ public class TestsDemoWebShop extends BasePage {
 		//	THEN
 		//		Then remove the item
 		//
-	@Test(dependsOnMethods="GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_UpdateQty")  
+	@Test
+	
 	public void GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_Remove() throws InterruptedException {
 
 		//Variables
+		String selectCategory = "Books";
 		String cartQTY1;
+		String cartQTY2;
 		String cartText; 
 		
 		//Neatly start the test by ensuring we in the home page
-		Reporter.log("User Story 4: remove item from cart");
+		Reporter.log("User Story 4: Remove item from cart");
 		basePG.NavigateToHomePage();
-		GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_UpdateQty();
+		basePG.selectSideMenuCategory(selectCategory);
+		resultsPG.clickAddToCart("1");
+		resultsPG.clickOnCart();
 		
 		//Step One check if cart is empty
-		cartQTY1 = resultsPG.getCartTextPageHeader();
-		System.out.println("The print QTY is : " + cartQTY1);
-		Assert.assertEquals(cartQTY1.contentEquals("(0)"), false);	
+		cartQTY1 = cartPG.selectCartQty();
 		Reporter.log(" Actual Cart QTY : " + cartQTY1);
+		Assert.assertEquals(cartQTY1.contentEquals("0"), false);	
 
-		//Step Two go to Cart
-		resultsPG.clickOnCart();
-		Thread.sleep(3000);
-		
-		//Step Three select Item to be removed
+		//Step Two Select Item to be removed
 		cartPG.selectFirstItemTickBox();
 	
-		//Step Four Update the Shopping Cart
+		//Step Three Update the Shopping Cart
 		cartPG.updateShoppingCart();
-		Thread.sleep(3000);
-		cartQTY1 = resultsPG.getCartTextPageHeader();
-		Reporter.log("Cart QTY after item removed : " + cartQTY1);
+
+		cartQTY2 = cartPG.selectCartQty();
+		Reporter.log("Cart QTY after item removed : " + cartQTY2);
 		cartText = cartPG.cartRemovalText();
 		Reporter.log("Cart text after item removed : " + cartText);
+		Assert.assertEquals(cartQTY2.contentEquals("0"), true);	
+		
+		//Step six : Cleanup
+		basePG.NavigateToHomePage();
 		
 }	
 	//User Story 5: estimate shipping
@@ -196,30 +221,28 @@ public class TestsDemoWebShop extends BasePage {
 		//	THEN
 		//		Then perform Estimate Shipping
 		//
-	@Test(dependsOnMethods="GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_UpdateQty")
+	@Test
 	public void GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_EstimateSHipping() throws InterruptedException {
 		
 		//Variables
-		String cartQTY2;
 		String selectCountry = "United States";
 		String resultText;
+		String selectCategory = "Books";
+		String cartQTY1;
 		
 		//Neatly start the test by ensuring we in the home page
-		Reporter.log("User Story 5: estimate shipping");
+		Reporter.log("User Story 5: Estimate shipping");
 		basePG.NavigateToHomePage();
-		GIVEN_CartnotEmpty_WHEN_GoToCart_THEN_UpdateQty();
+		basePG.selectSideMenuCategory(selectCategory);
+		resultsPG.clickAddToCart("1");
+		resultsPG.clickOnCart();
 		
 		//Step One check if cart is empty
-		cartQTY2 = resultsPG.getCartTextPageHeader();
-		System.out.println("The print QTY is : " + cartQTY2);
-		Assert.assertEquals(cartQTY2.contentEquals("(0)"), false);	
-		Reporter.log(" Actual Cart QTY : " + cartQTY2);
+		cartQTY1 = cartPG.selectCartQty();
+		Reporter.log(" Actual Cart QTY : " + cartQTY1);
+		Assert.assertEquals(cartQTY1.contentEquals("0"), false);	
 
-		//Step Two go to Cart
-		resultsPG.clickOnCart();
-		Thread.sleep(3000);
-		
-		//Step Three select the Country and province if United States
+		//Step Two Select the Country and province if United States
 		cartPG.selectCountry(selectCountry);
 		Thread.sleep(3000);
 		cartPG.clickEstimate();
@@ -230,6 +253,11 @@ public class TestsDemoWebShop extends BasePage {
 
 		Reporter.log("Result text after Estimate of Shipping : " + resultText);
 		Assert.assertEquals(resultText.contains("In-Store Pickup "), true);
+		
+		//Step six : Cleanup
+		cartPG.selectFirstItemTickBox();
+		cartPG.updateShoppingCart();
+		basePG.NavigateToHomePage();
 		
 }	
 	//User Story 6: add to your compare list
@@ -245,10 +273,10 @@ public class TestsDemoWebShop extends BasePage {
 	public void GIVEN_ShopperOnLandingPage_WHEN_SelectTwoItems_THEN_CompareItems() throws InterruptedException {
 		
 		//Variables
-		String itemDescOneBefore;
-		String itemDescTwoBefore;
 		String itemPriceOneBefore;
 		String itemPriceTwoBefore;
+		String itemDescOneBefore;
+		String itemDescTwoBefore;
 		String itemOneDescription1;
 		String itemTwoDescription2;
 		String itemOnePrice1;
@@ -256,7 +284,7 @@ public class TestsDemoWebShop extends BasePage {
 		
 		//Neatly start the test by ensuring we in the home page
 		//Step One: Select the First Item to the compare list
-		Reporter.log("User Story 6: add to your compare list");
+		Reporter.log("User Story 6: Add to your compare list");
 		basePG.NavigateToHomePage();
 		basePG.selectSideMenuCategory("Books");
 		
@@ -296,7 +324,14 @@ public class TestsDemoWebShop extends BasePage {
 		Assert.assertEquals(itemPriceOneBefore, itemOnePrice1);
 		Assert.assertEquals(itemPriceTwoBefore, itemTwoPrice2);
 		
-		
+		//Step six : Cleanup
+		basePG.NavigateToHomePage();
+
+	}
+	
+	@AfterTest
+	public void testCleanup() {
+		cleanUp();
 	}
 	
 }

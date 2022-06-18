@@ -8,6 +8,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ReadExcel extends BasePage {
+	
+	//Method: Read the data entered in the Spreadsheet
 	public String[][] getExcelData(String fileName, String sheetName) {
 		String[][] data = null;
 		try {
