@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.jar.*;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -84,7 +85,7 @@ public class BasePage {
 		WebDriverWait wait = new WebDriverWait(driver, elementWait);
 		wait.until(ExpectedConditions.elementToBeClickable(pLocator));
 	}
-	// ...Wait to dissappear
+	// ...Wait to disappear
 	public void waitToDisappear(int elementWait, By pLocator) {
 		WebDriverWait wait = new WebDriverWait(driver, elementWait);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(pLocator));

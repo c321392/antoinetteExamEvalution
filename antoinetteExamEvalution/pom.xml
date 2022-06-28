@@ -15,8 +15,9 @@
 		<maven.compiler.target>1.11</maven.compiler.target>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-
+		<timeZone>UTC</timeZone>
 	</properties>
+
 	<profiles>
 		<profile>
 			<id>ScreenshotsAnt</id>
@@ -48,6 +49,25 @@
 								<suiteXmlFile>testng.xml</suiteXmlFile>
 							</suiteXmlFiles>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.10</version>
+						<executions>
+							<execution>
+								<id>timestamp-property</id>
+								<goals>
+									<goal>timestamp-property</goal>
+								</goals>
+								<configuration>
+									<name>maven.build.timestamp</name>
+									<pattern>yyyyMMddHHmmss</pattern>
+									<locale>nl_NL</locale>
+									<timeZone>Europe/Amsterdam</timeZone>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -87,6 +107,7 @@
 					<plugin>
 						<artifactId>maven-compiler-plugin</artifactId>
 						<version>3.8.0</version>
+
 					</plugin>
 					<plugin>
 						<artifactId>maven-surefire-plugin</artifactId>

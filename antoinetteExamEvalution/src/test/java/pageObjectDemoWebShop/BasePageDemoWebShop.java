@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import frameworkClasses.BasePage;
+import frameworkClasses.Utilities;
 
 public class BasePageDemoWebShop extends BasePage {
 	// Method: Go to Home Page
@@ -43,6 +44,17 @@ public class BasePageDemoWebShop extends BasePage {
 	public void enterText(By pLocator, String enterText) {
 		waitforClick(30, pLocator);
 		driver.findElement(pLocator).sendKeys(enterText);
+	}
+	
+	//Method: Screenshot to ensure the correct screen shot appears in the report
+	public void scrnShot() {
+		Utilities uts = new Utilities();
+		try {
+			uts.takeSnapShot("On test Success" + uts.timeReturn() + ".png");
+			System.out.println("On test Success");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
