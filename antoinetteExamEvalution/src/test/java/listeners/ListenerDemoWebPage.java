@@ -22,12 +22,12 @@ public class ListenerDemoWebPage extends BasePage implements ITestListener {
 		// TODO Auto-generated method stub
 		ITestListener.super.onTestSuccess(result);
 		//when this method is triggered take a screenshot
-		try {
-			uts.takeSnapShot("On test Success" + uts.timeReturn() + ".png");
-			System.out.println("On test Success");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			uts.takeSnapShot("On test Success" + uts.timeReturn() + ".png");
+//			System.out.println("On test Success");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
